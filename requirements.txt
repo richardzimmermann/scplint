@@ -1,0 +1,5 @@
+botocore
+jsonschema
+configparser
+click
+pyyaml

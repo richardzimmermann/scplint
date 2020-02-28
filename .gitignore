@@ -1,0 +1,37 @@
+*.egg-info
+
+# Zipped up Lambda functions
+*.zip
+
+# Terraform stuff
+terraform/.terraform.tfstate.lock
+terraform/.terraform/*
+terraform/build/*
+terraform/terraform.tfstate
+terraform/terraform.tfstate.backup
+terraform/terraform.tfvars
+terraform/itsm-tf.plan
+
+# pytest
+.pytest_cache
+pytest-result/
+
+# build logs
+build.log
+
+# coverage files
+.coverage
+
+# python cache files
+*.pyc
+
+# temp
+tmp/*
+
+# swp files
+*.swp
+
+# test config
+tests/integration/common.yaml
+
+scps/*

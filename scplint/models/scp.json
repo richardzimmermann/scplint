@@ -1,0 +1,219 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "title": "AWS SCP",
+  "description": "Definition of an AWS Service Control Policy, find more information here: https://docs.aws.amazon.com/organizations/latest/userguide/orgs_reference_scp-syntax.html",
+  "type": "object",
+  "definitions": {
+    "conditionsSimple": {
+      "type": "object",
+      "properties": {
+        "Null": {
+          "type": "object",
+          "description": "Use a Null condition operator to check if a condition key is present at the time of authorization"
+        }
+      },
+      "patternProperties": {
+        "^(ForAnyValue:)?StringEquals(IfExists)?$": {
+          "type": "object"
+        },
+        "^(ForAnyValue:)?StringNotLike(IfExists)?$": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "conditions": {
+      "$id": "#conditions",
+      "type": "object",
+      "properties": {
+        "Null": {
+          "type": "object",
+          "description": "Use a Null condition operator to check if a condition key is present at the time of authorization"
+        }
+      },
+      "patternProperties": {
+        "^((ForAnyValue:)|(ForAllValues:))?StringEquals(IfExists)?$": {
+          "type": "object",
+          "description": "Exact matching, case sensitive"
+        },
+        "^((ForAnyValue:)|(ForAllValues:))?StringNotEquals(IfExists)?$": {
+          "type": "object",
+          "description": "Negated matching"
+        },
+        "^((ForAnyValue:)|(ForAllValues:))?StringEqualsIgnoreCase(IfExists)?$": {
+          "type": "object",
+          "description": "Exact matching, ignoring case"
+        },
+        "^((ForAnyValue:)|(ForAllValues:))?StringNotEqualsIgnoreCase(IfExists)?$": {
+          "type": "object",
+          "description": "Negated matching, ignoring case"
+        },
+        "^((ForAnyValue:)|(ForAllValues:))?StringLike(IfExists)?$": {
+          "type": "object",
+          "description": "Case-sensitive matching. The values can include a multi-character match wildcard (*) or a single-character match wildcard (?) anywhere in the string."
+        },
+        "^((ForAnyValue:)|(ForAllValues:))?StringNotLike(IfExists)?$": {
+          "type": "object",
+          "description": "Negated case-sensitive matching. The values can include a multi-character match wildcard (*) or a single-character match wildcard (?) anywhere in the string."
+        },
+        "^NumericEquals(IfExists)?$": {
+          "type": "object",
+          "description": "Matching"
+        },
+        "^NumericNotEquals(IfExists)?$": {
+          "type": "object",
+          "description": "Negated matching"
+        },
+        "^NumericLessThan(IfExists)?$": {
+          "type": "object",
+          "description": "Less than matching"
+        },
+        "^NumericLessThanEquals(IfExists)?$": {
+          "type": "object",
+          "description": "Less than or equals matching"
+        },
+        "^NumericGreaterThan(IfExists)?$": {
+          "type": "object",
+          "description": "Greater than matching"
+        },
+        "^NumericGreaterThanEquals(IfExists)?$": {
+          "type": "object",
+          "description": "Greater than or equals matching"
+        },
+        "^DateEquals(IfExists)?$": {
+          "type": "object",
+          "description": "Matching a specific date"
+        },
+        "^DateNotEquals(IfExists)?$": {
+          "type": "object",
+          "description": "Negated matching"
+        },
+        "^DateLessThan(IfExists)?$": {
+          "type": "object",
+          "description": "Matching before a specific date and time"
+        },
+        "^DateLessThanEquals(IfExists)?$": {
+          "type": "object",
+          "description": "Matching at or before a specific date and time"
+        },
+        "^DateGreaterThan(IfExists)?$": {
+          "type": "object",
+          "description": "Matching after a specific a date and time"
+        },
+        "^DateGreaterThanEquals(IfExists)?$": {
+          "type": "object",
+          "description": "Matching at or after a specific date and time"
+        },
+        "^Bool(IfExists)?$": {
+          "type": "object",
+          "description": "Boolean matching"
+        },
+        "^BinaryEquals(IfExists)?$": {
+          "type": "object",
+          "description": "Matching"
+        },
+        "^IpAddress(IfExists)?$": {
+          "type": "object",
+          "description": "The specified IP address or range"
+        },
+        "^NotIpAddress(IfExists)?$": {
+          "type": "object",
+          "description": "All IP addresses except the specified IP address or range"
+        },
+        "^ArnEquals(IfExists)?$": {
+          "type": "object",
+          "description": "Case-sensitive matching of the ARN. Each of the six colon-delimited components of the ARN is checked separately and each can include a multi-character match wildcard (*) or a single-character match wildcard (?). These behave identically."
+        },
+        "^ArnLike(IfExists)?$": {
+          "type": "object",
+          "description": "Case-sensitive matching of the ARN. Each of the six colon-delimited components of the ARN is checked separately and each can include a multi-character match wildcard (*) or a single-character match wildcard (?). These behave identically."
+        },
+        "^ArnNotEquals(IfExists)?$": {
+          "type": "object",
+          "description": "Negated matching for ARN. These behave identically."
+        },
+        "^ArnNotLike(IfExists)?$": {
+          "type": "object",
+          "description": "Negated matching for ARN. These behave identically."
+        }
+      },
+      "additionalProperties": false
+    },
+    "statement": {
+      "type": "object",
+      "properties": {
+        "Sid": {
+          "type": "string"
+        },
+        "Effect": {
+          "type": "string",
+          "enum": ["Allow", "Deny"]
+        },
+        "Action": {
+          "type": ["string", "array"]
+        },
+        "NotAction": {
+          "type": ["string", "array"]
+        },
+        "Resource": {
+          "type": ["string", "array"]
+        },
+        "Condition": {
+          "$ref": "#/definitions/conditionsSimple"
+        }
+      },
+      "oneOf": [{ "required": ["Effect", "Action", "Resource"] }, { "required": ["Effect", "NotAction", "Resource"] }],
+      "additionalProperties": false
+    }
+  },
+  "properties": {
+    "Version": {
+      "type": "string",
+      "const": "2012-10-17"
+    },
+    "Statement": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/statement" }
+    }
+  },
+  "additionalProperties": false,
+  "required": ["Version", "Statement"],
+  "examples": [
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Deny",
+          "Action": ["ec2:*"],
+          "Resource": "*",
+          "Condition": {
+            "StringNotLike": {
+              "aws:PrincipalARN": ["arn:aws:iam::*:role/MyRole"]
+            }
+          }
+        },
+        {
+          "Effect": "Deny",
+          "Action": "ec2:RunInstances",
+          "Resource": "*",
+          "Condition": {
+            "ForAnyValue:StringNotLike": {
+              "ec2:InstanceType": ["*.nano", "*.micro", "*.small", "*.medium"]
+            }
+          }
+        },
+        {
+          "Effect": "Deny",
+          "Action": ["rds:CreateDBInstance", "rds:CreateDBCluster"],
+          "Resource": "*",
+          "Condition": {
+            "ForAnyValue:StringNotLike": {
+              "rds:DatabaseClass": ["*.micro", "*.small", "*.medium"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
