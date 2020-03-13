@@ -7,7 +7,16 @@ from jsonschema.exceptions import ValidationError
 
 logger = getLogger()
 
-MSGS = {'E000': {'rule': 'Validation Error', 'msg': '{errors}'}}
+MSGS = {
+    'E000': {
+        'rule': 'Validation Error',
+        'msg': '{errors}'
+    },
+    'E001': {
+        'rule': 'Validation Error',
+        'msg': 'Duplicate key "{key}"'
+    }
+}
 
 
 def format_errors(errors: list) -> list:
@@ -55,17 +64,42 @@ def extend_with_default(validator_class):
     )
 
 
+def dict_raise_on_duplicates(ordered_pairs: list) -> dict:
+    ''' raise ValueError for duplicate keys '''
+    tmp_dict = {}
+
+    for key, value in ordered_pairs:
+        if key in tmp_dict:
+            raise ValueError(key)
+        else:
+            tmp_dict[key] = value
+
+    return tmp_dict
+
+
 class CheckSchema():
     def __init__(self, report):
         logger.debug('initialize: check schema')
         self.report = report
         self.scp = report.scp
         self._verify_schema()
+        self._check_duplicate_keys()
+
+    def _check_duplicate_keys(self):
+        ''' check if there are duplicate keys in the scp '''
+        logger.debug('check duplicate keys')
+
+        try:
+            json.loads(self.report.raw,
+                       object_pairs_hook=dict_raise_on_duplicates)
+        except ValueError as error:
+            print(error)
+            details = {'key': str(error)}
+            self.report.add_error(MSGS, 'E001', details)
 
     def _verify_schema(self):
         ''' verifies the json schema of the scp '''
         logger.debug('verify scp schema')
-        logger.debug(self.scp.scp)
 
         script_location = Path(__file__).absolute().parent
         file_location = f'{script_location}/../models/scp.json'

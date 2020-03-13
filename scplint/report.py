@@ -17,8 +17,9 @@ def _format_msg(func):
 
 
 class Report():
-    def __init__(self, scp):
+    def __init__(self, scp, raw):
         logger.debug('initialize report')
+        self.raw = raw
         self.scp = scp
         self.file = scp.file
         self.size = scp.size

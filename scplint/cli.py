@@ -104,11 +104,12 @@ def main():
     for file in files:
         logger.info('check file %s', file)
 
-        policy = json.loads(open(file).read())
+        raw_file = open(file).read()
+        policy = json.loads(raw_file)
         minimize = ARGS.get('minimize')
         scp = SCP(scp=policy, filename=file, minimize=minimize)
 
-        report = Report(scp)
+        report = Report(scp, raw_file)
         run_checks(report)
 
         if not ARGS.get('detailed'):

@@ -23,6 +23,7 @@ $ pip install git+https://github.com/richardzimmermann/scplint.git
 - Mandatory keys exist (based on the [AWS documentation](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_reference_scp-syntax.html))
 - Unknown keys are not allowed
 - Unknown conditions are not allowed (based on the [AWS documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_condition_operators.html))
+- Keys are unique
 
 ### Check Limits
 
@@ -46,30 +47,70 @@ $ pip install git+https://github.com/richardzimmermann/scplint.git
 ## Usage
 
 ```
-$ scplint -i my_scp.json
+$ scplint -h
+usage: scplint.bat [-h] -i INPUT [-d] [-m] [-r] [-o {json,yaml}] [-v] [--version]
+
+SCPlint to validate and optimize your AWS SCPs
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -i INPUT, --input INPUT
+                        Path to the SCP(s), e.g. "path/to/scp.json"
+  -d, --detailed        Enable detailed report of your SCP(s)
+  -m, --minimize        Minimize the SCP (remove linebreaks and blanks)
+  -r, --recursive       Search recursive for json files the given folder.
+  -o {json,yaml}, --output {json,yaml}
+                        Configure output format of the report
+  -v, --verbose         Enable verbose logging.
+  --version             Print the current version of scplint
+```
+
+Here's an example output:
+
+```
+$ scplint -i my_scp.json -m -d
 
 {
     "details": [
         {
             "actions": {
-                "actions": 37,
+                "actions": 94,
                 "actual": 0,
                 "error": 0,
-                "explicit": 32,
+                "explicit": 42,
                 "info": 0,
-                "notactions": 0,
-                "warning": 3,
-                "wildcard": 12
+                "notactions": 1,
+                "warning": 0,
+                "wildcard": 670
+            },
+            "details": {
+                "recommendations": [
+                    {
+                        "code": "O301",
+                        "msg": "Actions are unsorted.",
+                        "rule": "Action unsorted"
+                    },
+                    {
+                        "code": "O301",
+                        "msg": "Actions are unsorted.",
+                        "rule": "Action unsorted"
+                    },
+                    {
+                        "code": "O301",
+                        "msg": "Actions are unsorted.",
+                        "rule": "Action unsorted"
+                    }
+                ]
             },
             "file": "my_scp.json",
-            "percent": "45.5%",
-            "size": 2328,
+            "percent": "83.7%",
+            "size": 4283,
             "size_maximum": 5120,
             "summary": {
                 "errors": 0,
                 "infos": 0,
-                "recommendations": 2,
-                "warnings": 3
+                "recommendations": 3,
+                "warnings": 0
             }
         }
     ],
@@ -79,8 +120,8 @@ $ scplint -i my_scp.json
     "summary": {
         "errors": 0,
         "infos": 0,
-        "recommendations": 2,
-        "warnings": 3
+        "recommendations": 3,
+        "warnings": 0
     }
 }
 ```

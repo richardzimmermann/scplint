@@ -1,11 +1,31 @@
-# Error Level and Bugfix (v0.0.2)
+# Changelog
 
-## Add
+## v0.0.3
 
-- scplint exits now with error level 1 if there are any errors in your SCPs
+### Add
 
-## Fix
+- Check if all keys in the SCP are unique.
 
-- Use the correct patternProperties for conditions for jsonschema
+### Removed
 
-# Initial Release (v0.0.1)
+- Temporarly removed check "O303: Add Wildcard". This recommendation needs a more complex ruleset.
+
+---
+
+## v0.0.2
+
+### Add
+
+- scplint exits now with error level 1 if there are any errors in your SCPs.
+
+### Fix
+
+- Use the correct patternProperties for conditions for jsonschema.
+
+---
+
+## v0.0.1
+
+Initial realease.
+
+---

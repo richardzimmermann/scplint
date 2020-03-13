@@ -63,8 +63,11 @@ class CheckRecommendations():
                     if action_1 == action_2:
                         continue
 
-                    if action_1 in action_2:
-                        self.report.add_recommendation(MSGS, 'O303', details)
+                    # TODO: pay attention that a wildcard could allow more than
+                    # just the two actions. check needs to be more complex.
+                    #
+                    # if action_1 in action_2:
+                    #     self.report.add_recommendation(MSGS, 'O303', details)
 
                     if '*' in action_1 and action_1.split('*')[0] in action_2:
                         self.report.add_recommendation(MSGS, 'O304', details)
