@@ -4,24 +4,6 @@
   "description": "Definition of an AWS Service Control Policy, find more information here: https://docs.aws.amazon.com/organizations/latest/userguide/orgs_reference_scp-syntax.html",
   "type": "object",
   "definitions": {
-    "conditionsSimple": {
-      "type": "object",
-      "properties": {
-        "Null": {
-          "type": "object",
-          "description": "Use a Null condition operator to check if a condition key is present at the time of authorization"
-        }
-      },
-      "patternProperties": {
-        "^(ForAnyValue:)?StringEquals(IfExists)?$": {
-          "type": "object"
-        },
-        "^(ForAnyValue:)?StringNotLike(IfExists)?$": {
-          "type": "object"
-        }
-      },
-      "additionalProperties": false
-    },
     "conditions": {
       "$id": "#conditions",
       "type": "object",
@@ -159,7 +141,7 @@
           "type": ["string", "array"]
         },
         "Condition": {
-          "$ref": "#/definitions/conditionsSimple"
+          "$ref": "#/definitions/conditions"
         }
       },
       "oneOf": [{ "required": ["Effect", "Action", "Resource"] }, { "required": ["Effect", "NotAction", "Resource"] }],

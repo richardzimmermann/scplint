@@ -3,12 +3,6 @@
 This package is used to test, validate and optimize AWS Service Control
 Policies.
 
-## Installation (not yet working)
-
-```
-$ pip install scplint
-```
-
 ## Installation via GitHub
 
 ```
@@ -48,3 +42,45 @@ $ pip install git+https://github.com/richardzimmermann/scplint.git
 - Returns recommendations if you can combine one or more items by adding wildcards.
 
 ---
+
+## Usage
+
+```
+$ scplint -i my_scp.json
+
+{
+    "details": [
+        {
+            "actions": {
+                "actions": 37,
+                "actual": 0,
+                "error": 0,
+                "explicit": 32,
+                "info": 0,
+                "notactions": 0,
+                "warning": 3,
+                "wildcard": 12
+            },
+            "file": "my_scp.json",
+            "percent": "45.5%",
+            "size": 2328,
+            "size_maximum": 5120,
+            "summary": {
+                "errors": 0,
+                "infos": 0,
+                "recommendations": 2,
+                "warnings": 3
+            }
+        }
+    ],
+    "files": [
+        "my_scp.json"
+    ],
+    "summary": {
+        "errors": 0,
+        "infos": 0,
+        "recommendations": 2,
+        "warnings": 3
+    }
+}
+```

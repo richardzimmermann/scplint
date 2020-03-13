@@ -3,6 +3,7 @@ import configparser
 import json
 import pathlib
 import re
+import sys
 from glob import glob
 
 import yaml
@@ -10,10 +11,9 @@ import yaml
 import scplint
 from scplint.log import init_logging
 from scplint.report import Report
-from scplint.scp import SCP
 from scplint.run_checks import run_checks
+from scplint.scp import SCP
 
-#
 PARSER = argparse.ArgumentParser(
     description=('SCPlint to validate and optimize your AWS SCPs'))
 
@@ -68,18 +68,15 @@ def get_file_paths():
 
 
 def print_report(report: dict):
-    # print('-----------------------------------------------------------\n')
-
     if ARGS['output'] == 'json':
         print(json.dumps(report, indent=4, sort_keys=True))
     elif ARGS['output'] == 'yaml':
         print(yaml.dump(report, width=79, indent=2))
 
-    print('\n-----------------------------------------------------------')
-
 
 def create_summary(all_results: list) -> dict:
     report = {
+        'details': all_results,
         'files': [],
         'summary': {
             'recommendations': 0,
@@ -120,8 +117,9 @@ def main():
             results = report.get_report_detailed()
 
         all_results.append(results)
-        print_report(results)
 
-    if len(files) > 1:
-        summary = create_summary(all_results)
-        print_report(summary)
+    summary = create_summary(all_results)
+    print_report(summary)
+
+    if summary['summary']['errors']:
+        sys.exit(1)
