@@ -1,4 +1,6 @@
 *.egg-info
+Pipfile
+Pipfile.lock
 
 # Zipped up Lambda functions
 *.zip
